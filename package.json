@@ -1,0 +1,26 @@
+{
+  "name": "battle-ship",
+  "version": "1.0.0",
+  "description": "Recreation of a popular boardgame called battle ship. This web app is built using TDD.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bjfett24/battle-ship.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bjfett24/battle-ship/issues"
+  },
+  "homepage": "https://github.com/bjfett24/battle-ship#readme",
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "babel-jest": "^30.0.4"
+  }
+}
