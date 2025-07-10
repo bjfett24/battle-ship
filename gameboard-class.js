@@ -9,6 +9,7 @@ class GameBoard {
                 this.matrix[i][j] = 'empty';
             }
         }
+        this.misses = [];
     }
 
     populateShips() {
@@ -50,6 +51,14 @@ class GameBoard {
                     this.matrix[coord[0]][coord[1] + i] = newShip;
                 }
             }
+        }
+    }
+
+    receiveAttack(coord) {
+        if (this.matrix[coord[0]][coord[1]] == 'empty') {
+            this.misses.push(coord);
+        } else {
+            this.matrix[coord[0]][coord[1]].hit();
         }
     }
 
