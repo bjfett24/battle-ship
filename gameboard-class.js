@@ -6,14 +6,17 @@ class GameBoard {
         for (let i = 0; i < 10; i++) {
             this.matrix[i] = new Array(10);
             for (let j = 0; j < 10; j++) {
-                this.matrix[i][j] = null;
+                this.matrix[i][j] = 'empty';
             }
         }
     }
 
     populateShips() {
         for (let i = 2; i < 6; i++) {
-            const coord = [Math.floor(Math.random() * (10)), Math.floor(Math.random() * (10))];
+            let coord = [Math.floor(Math.random() * (10)), Math.floor(Math.random() * (10))];
+            while (this.matrix[coord[0]][coord[1]] != 'empty') {
+                coord = [Math.floor(Math.random() * (10)), Math.floor(Math.random() * (10))];
+            }
             let direction;
             if (Math.random() > 0.5) {
                 direction = 'h';
