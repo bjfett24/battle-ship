@@ -1,7 +1,6 @@
 import { Ship } from './ship-class.js';
 class GameBoard {
     constructor() {
-        this.width = 10;
         this.matrix = [];
         for (let i = 0; i < 10; i++) {
             this.matrix[i] = new Array(10);
@@ -64,6 +63,17 @@ class GameBoard {
 
     inspectBoard(coord) {
         return this.matrix[coord[0]][coord[1]];
+    }
+
+    resetBoard() {
+        this.matrix = [];
+        for (let i = 0; i < 10; i++) {
+            this.matrix[i] = new Array(10);
+            for (let j = 0; j < 10; j++) {
+                this.matrix[i][j] = 'empty';
+            }
+        }
+        this.misses = [];
     }
 }
 

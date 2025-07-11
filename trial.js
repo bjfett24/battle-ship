@@ -4,14 +4,3 @@ function sum(a, b) {
 
 export { sum };
 
-console.log(Math.random())
-console.log(Math.random())
-console.log(Math.random())
-console.log(Math.random())
-console.log(Math.random())
-console.log(Math.random())
-console.log(Math.random())
-console.log(Math.random())
-console.log(Math.random())
-console.log(Math.random())
-console.log(Math.random())
