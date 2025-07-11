@@ -3,3 +3,34 @@ body, :root {
     padding: 0px;
     height: 100vh;
 }
+
+.main-container {
+    height: 100%;
+    width: 100%;
+}
+
+.board.container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.my-board, .com-board {
+    border: 1px solid black;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.square {
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid black;
+}
+
+.square:hover {
+    background-color: grey;
+}

@@ -3,7 +3,7 @@ import { populateGame } from './game-page.js';
 function populateStart() {
     
     const container = document.createElement('div');
-    container.classList.add('start', 'container');
+    container.classList.add('start', 'main-container');
     document.body.appendChild(container);
 
     const startGroup = document.createElement('div');

@@ -1,9 +1,10 @@
+
 function populateGame() {
-    const oldContainer = document.querySelector('.container');
+    const oldContainer = document.querySelector('.main-container');
     oldContainer.remove();
 
     const container = document.createElement('div');
-    container.classList.add('game', 'container');
+    container.classList.add('game', 'main-container');
     document.body.appendChild(container);
 
     const title = document.createElement('div');
@@ -11,5 +12,39 @@ function populateGame() {
     title.textContent = 'Battle Ships';
     container.appendChild(title);
 
+    const boardContainer = document.createElement('div');
+    boardContainer.classList.add('board', 'container');
+    container.appendChild(boardContainer);
+
+    const myBoard = document.createElement('div');
+    myBoard.classList.add('my-board');
+    // myBoard.textContent = 'empty text';
+    boardContainer.appendChild(myBoard);
+
+    const comBoard = document.createElement('div');
+    comBoard.classList.add('com-board');
+    // comBoard.textContent = 'empty text';
+    boardContainer.appendChild(comBoard);
     
+    fillBoards([myBoard, comBoard]);
+
+
 }
+
+function fillBoards(boards) {
+    for (let board of boards) {
+        for (let row = 9; row > -1; row--) {
+            const rowBox = document.createElement('div');
+            rowBox.classList.add('row', `r${row}`);
+            board.appendChild(rowBox);
+            for (let col = 0; col < 10; col++) {
+                const square = document.createElement('div');
+                square.classList.add('square', `sq${col}-${row}`);
+                square.type = 'button';
+                rowBox.appendChild(square);
+            }
+        }
+    }
+}
+
+export { populateGame };
