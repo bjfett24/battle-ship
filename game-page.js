@@ -1,3 +1,4 @@
+import { driveGame } from "./driver.js";
 
 function populateGame() {
     const oldContainer = document.querySelector('.main-container');
@@ -12,6 +13,12 @@ function populateGame() {
     title.textContent = 'Battle Ships';
     container.appendChild(title);
 
+    const setShips = document.createElement('button');
+    setShips.classList.add('set-ships');
+    setShips.textContent = 'Place Ships';
+    setShips.addEventListener('click', driveGame);
+    container.appendChild(setShips);
+
     const boardContainer = document.createElement('div');
     boardContainer.classList.add('board', 'container');
     container.appendChild(boardContainer);
@@ -25,8 +32,9 @@ function populateGame() {
     comBoard.classList.add('com-board');
     // comBoard.textContent = 'empty text';
     boardContainer.appendChild(comBoard);
-    
+
     fillBoards([myBoard, comBoard]);
+
 
 
 }
@@ -46,5 +54,7 @@ function fillBoards(boards) {
         }
     }
 }
+
+
 
 export { populateGame };
