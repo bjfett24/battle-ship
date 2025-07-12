@@ -1,25 +1,37 @@
 import { Player } from "./player-class.js";
 
-function driveGame() {
-    const gameStatus = undefined;
+class Driver {
+    constructor() {
+        this.gameStatus = undefined;
+    }
+    driveGame() {
+        const setShips = document.querySelector('.set-ships');
+        setShips.remove();
 
-    const realPlayer = new Player('real');
-    const comPlayer = new Player('com');
+        const resetGame = document.createElement('button');
+        resetGame.classList.add('reset-game');
+        resetGame.textContent = 'Reset Game';
+        const buttonBox = document.querySelector('.button-box');
+        buttonBox.appendChild(resetGame);
 
-    realPlayer.board.populateShips();
-    comPlayer.board.populateShips();
+        const realPlayer = new Player('real');
+        const comPlayer = new Player('com');
 
-    populateShips(realPlayer);
+        realPlayer.board.populateShips();
+        comPlayer.board.populateShips();
 
-}
+        this.populateShipsDOM(realPlayer);
+
+    }
 
 
-function populateShips(player) {
-    const ships = player.board.getShips();
-    for (let ship of ships) {
-        const square = document.querySelector(`.sq${ship[0]}-${ship[1]}`);
-        square.classList.add('ship');
+    populateShipsDOM(player) {
+        const ships = player.board.getShips();
+        for (let ship of ships) {
+            const square = document.querySelector(`.sq${ship[0]}-${ship[1]}`);
+            square.classList.add('ship');
+        }
     }
 }
 
-export { driveGame }
+export { Driver };

@@ -1,4 +1,4 @@
-import { driveGame } from "./driver.js";
+import { Driver } from "./driver.js";
 
 function populateGame() {
     const oldContainer = document.querySelector('.main-container');
@@ -13,11 +13,18 @@ function populateGame() {
     title.textContent = 'Battle Ships';
     container.appendChild(title);
 
+    const buttonBox = document.createElement('div');
+    buttonBox.classList.add('button-box');
+    container.appendChild(buttonBox);
+
     const setShips = document.createElement('button');
     setShips.classList.add('set-ships');
     setShips.textContent = 'Place Ships';
-    setShips.addEventListener('click', driveGame);
-    container.appendChild(setShips);
+    setShips.addEventListener('click', () => {
+        const newDriver = new Driver();
+        newDriver.driveGame();
+    });
+    buttonBox.appendChild(setShips);
 
     const boardContainer = document.createElement('div');
     boardContainer.classList.add('board', 'container');
