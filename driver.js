@@ -26,6 +26,7 @@ class Driver {
         this.realPlayerBoard = realPlayer.board;
         this.comPlayerBoard = comPlayer.board;
 
+        console.log(this.realPlayerBoard.getMatrix());
         console.log(this.comPlayerBoard.getMatrix());
 
         this.populateShipsDOM(realPlayer);
