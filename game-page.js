@@ -45,7 +45,7 @@ function populateGame() {
     const comSquares = document.querySelectorAll('.com-board .square');
     for (let square of comSquares) {
         square.addEventListener('click', function() {
-            driver.playTurn(this.classList);
+            driver.playTurn(this);
         });
     }
 
@@ -69,6 +69,13 @@ function fillBoards(boards) {
     }
 }
 
+function showHit(square) {
+    square.classList.add('hit');
+}
+
+function showMiss(square) {
+    square.classList.add('miss');
+}
 
 
-export { populateGame };
+export { populateGame, showHit, showMiss };

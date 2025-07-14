@@ -1,4 +1,5 @@
 import { Player } from "./player-class.js";
+import { showHit, showMiss } from "./game-page.js";
 
 class Driver {
     constructor() {
@@ -25,27 +26,43 @@ class Driver {
         this.realPlayerBoard = realPlayer.board;
         this.comPlayerBoard = comPlayer.board;
 
+        console.log(this.comPlayerBoard.getMatrix());
+
         this.populateShipsDOM(realPlayer);
 
     }
 
-    playTurn(classList) {
+    playTurn(square) {
+        const classList = square.classList;
         const coord = [classList[1].slice(2, 3), classList[1].slice(4, 5)];
-        this.checkComBoard(coord);
+        const isHit = this.checkComSquare(coord);
         this.comPlayerBoard.receiveAttack(coord);
 
+        if (isHit) {
+            showHit(square);
+        } else {
+            showMiss(square);
+        }
+
+        if (this.comPlayerBoard.checkEnd() == true) {
+            console.log('End of Game');
+        }
 
     }
 
-    checkComBoard(coord) {
+    checkComSquare(coord) {
         if (this.comPlayerBoard.inspectBoard(coord) != 'empty') {
             console.log('hit');
-            return 'hit';
+            return true;
         } else {
             console.log('miss');
-            return 'miss';
+            return false;
         }
     }
+
+    
+
+    
 
 
     populateShipsDOM(player) {

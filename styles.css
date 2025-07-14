@@ -38,3 +38,11 @@ body, :root {
 .square:hover {
     background-color: grey;
 }
+
+.square.hit {
+    background-color: red;
+}
+
+.square.miss {
+    background-color: black;
+}

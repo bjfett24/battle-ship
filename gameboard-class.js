@@ -9,12 +9,20 @@ class GameBoard {
             }
         }
         this.misses = [];
+        }
+
+    getMatrix() {
+        return this.matrix;
     }
 
     populateShips() {
         for (let i = 2; i < 6; i++) {
-            let coord = [Math.floor(Math.random() * (10)), Math.floor(Math.random() * (10))];
-            while (this.matrix[coord[0]][coord[1]] != 'empty') {
+            //let coord = [Math.floor(Math.random() * (10)), Math.floor(Math.random() * (10))];
+            for (let j = 0; j < i; i++) {
+
+            }
+            while (this.matrix[coord[0]][coord[1]] != 'empty' || 
+                   this.matrix[coord[0] + i][coord[1]]) {
                 coord = [Math.floor(Math.random() * (10)), Math.floor(Math.random() * (10))];
             }
             let direction;
@@ -23,12 +31,51 @@ class GameBoard {
             } else {
                 direction = 'v';
             }
+
+            const ships = this.getShips();
+            let coord = [Math.floor(Math.random() * (10)), Math.floor(Math.random() * (10))];
+            coord = this.moveShip(coord, i, direction, ships);
             this.placeShip(coord, i, direction);
         }
     }
 
+    moveShip(coord, length, direction, ships) {
+        let clear = true;
+        if (direction == 'h') {
+            for (let j = 0; j < length; j++) {
+                if (ships.includes([coord[0] + j, coord[1]])) {
+                    clear = false;
+                }
+            }
+            if (clear) {
+                return coord;
+            } else {
+                if (coord[1] + 1 > 9) {
+                    return this.moveShip([coord[0], 0], length, direction, ships)
+                } else {
+                    return this.moveShip([coord[0], coord[1] + 1], length, direction, ships)
+                }
+            }
+        } else if (direction == 'v') {
+            for (let j = 0; j < length; j++) {
+                if (ships.includes([coord[0], coord[1] + j])) {
+                    clear = false;
+                }
+            }
+            if (clear) {
+                return coord;
+            } else {
+                if (coord[0] + 1 > 9) {
+                    return this.moveShip([0, coord[1]], length, direction, ships)
+                } else {
+                    return this.moveShip([coord[0] + 1, coord[1]], length, direction, ships)
+                }
+            }
+        }
+    }
+
     placeShip(coord, length, direction) {
-        const newShip = new Ship(length)
+        const newShip = new Ship(length);
 
         if (direction == 'h') {
             if (coord[0] + length - 1 > 9) {
@@ -86,6 +133,23 @@ class GameBoard {
             }
         }
         return ships;
+    }
+
+    checkEnd() {
+        const ships = this.getShips();
+        const liveShips = ships.filter(ship => {
+            const shipObj = this.inspectBoard(ship);
+            if (shipObj.sunk == false) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        if (liveShips.length <= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
