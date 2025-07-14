@@ -1,6 +1,7 @@
 import { Driver } from "./driver.js";
 
 function populateGame() {
+    const driver = new Driver();
     const oldContainer = document.querySelector('.main-container');
     oldContainer.remove();
 
@@ -21,8 +22,7 @@ function populateGame() {
     setShips.classList.add('set-ships');
     setShips.textContent = 'Place Ships';
     setShips.addEventListener('click', () => {
-        const newDriver = new Driver();
-        newDriver.driveGame();
+        driver.setShips();
     });
     buttonBox.appendChild(setShips);
 
@@ -41,6 +41,13 @@ function populateGame() {
     boardContainer.appendChild(comBoard);
 
     fillBoards([myBoard, comBoard]);
+
+    const comSquares = document.querySelectorAll('.com-board .square');
+    for (let square of comSquares) {
+        square.addEventListener('click', function() {
+            driver.playTurn(this.classList);
+        });
+    }
 
 
 

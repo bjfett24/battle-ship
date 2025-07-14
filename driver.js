@@ -3,8 +3,10 @@ import { Player } from "./player-class.js";
 class Driver {
     constructor() {
         this.gameStatus = undefined;
+        this.realPlayerBoard;
+        this.comPlayerBoard;
     }
-    driveGame() {
+    setShips() {
         const setShips = document.querySelector('.set-ships');
         setShips.remove();
 
@@ -20,8 +22,29 @@ class Driver {
         realPlayer.board.populateShips();
         comPlayer.board.populateShips();
 
+        this.realPlayerBoard = realPlayer.board;
+        this.comPlayerBoard = comPlayer.board;
+
         this.populateShipsDOM(realPlayer);
 
+    }
+
+    playTurn(classList) {
+        const coord = [classList[1].slice(2, 3), classList[1].slice(4, 5)];
+        this.checkComBoard(coord);
+        this.comPlayerBoard.receiveAttack(coord);
+
+
+    }
+
+    checkComBoard(coord) {
+        if (this.comPlayerBoard.inspectBoard(coord) != 'empty') {
+            console.log('hit');
+            return 'hit';
+        } else {
+            console.log('miss');
+            return 'miss';
+        }
     }
 
 
