@@ -1,5 +1,5 @@
 import { Player } from "./player-class.js";
-import { showHit, showMiss } from "./game-page.js";
+import { showHit, showMiss, populateGame} from "./game-page.js";
 
 class Driver {
     constructor() {
@@ -14,6 +14,7 @@ class Driver {
         const resetGame = document.createElement('button');
         resetGame.classList.add('reset-game');
         resetGame.textContent = 'Reset Game';
+        resetGame.addEventListener('click', populateGame);
         const buttonBox = document.querySelector('.button-box');
         buttonBox.appendChild(resetGame);
 
