@@ -6,6 +6,8 @@ class Driver {
         this.gameStatus = undefined;
         this.realPlayerBoard;
         this.comPlayerBoard;
+        this.comSquares = document.querySelectorAll('.com-board .square');
+        this.placedShips = [];
     }
     setShips() {
         const setShips = document.querySelector('.set-ships');
@@ -27,15 +29,41 @@ class Driver {
         this.realPlayerBoard = realPlayer.board;
         this.comPlayerBoard = comPlayer.board;
 
-        console.log(this.realPlayerBoard.getMatrix());
-        console.log(this.comPlayerBoard.getMatrix());
-
         this.populateShipsDOM(realPlayer);
 
     }
 
+    setRealShip(coord, length, direction) {
+
+        const realPlayer = new Player('real');
+        realPlayer.board.placeShip(coord, length, direction);
+
+        this.realPlayerBoard = realPlayer.board;
+
+        this.populateShipsDOM(realPlayer);
+
+        this.placedShips.push(length);
+
+        if (this.placedShips.length == 4) {
+            const comPlayer = new Player('com');
+            comPlayer.board.populateShips();
+            this.comPlayerBoard = comPlayer.board;
+        }
+
+
+
+    }
+
     playTurn(square) {
+        console.log(this.comSquares)
+        for (let sq of this.comSquares) {
+            sq.classList.add('disabled');
+        }
+
+
         const classList = square.classList;
+        console.log(square)
+        console.log(classList);
         const coord = [classList[1].slice(2, 3), classList[1].slice(4, 5)];
         const isHit = this.checkComSquare(coord);
         this.comPlayerBoard.receiveAttack(coord);
@@ -50,10 +78,52 @@ class Driver {
             console.log('End of Game');
         }
 
+        setTimeout(() => {
+            this.comAttack();
+            for (let sq of this.comSquares) {
+                sq.classList.remove('disabled');
+            }
+
+        }, 1000);
+
+    }
+
+    comAttack() {
+        let coord = [Math.floor(Math.random() * (10)), Math.floor(Math.random() * (10))];
+        const isHit = this.checkRealPlayerSquare(coord);
+
+        while (this.realPlayerBoard.includesPlay(coord)) {
+            coord = [Math.floor(Math.random() * (10)), Math.floor(Math.random() * (10))];
+        }
+        this.realPlayerBoard.receiveAttack(coord);
+
+
+        const square = document.querySelector(`.my-board .sq${coord[0]}-${coord[1]}`)
+
+        if (isHit) {
+            showHit(square)
+        } else {
+            showMiss(square);
+        }
+
+        if (this.realPlayerBoard.checkEnd() == true) {
+            console.log('End of Game');
+        }
+
     }
 
     checkComSquare(coord) {
         if (this.comPlayerBoard.inspectBoard(coord) != 'empty') {
+            console.log('hit');
+            return true;
+        } else {
+            console.log('miss');
+            return false;
+        }
+    }
+
+    checkRealPlayerSquare(coord) {
+        if (this.realPlayerBoard.inspectBoard(coord) != 'empty') {
             console.log('hit');
             return true;
         } else {

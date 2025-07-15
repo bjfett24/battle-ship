@@ -1,7 +1,7 @@
 import { Driver } from "./driver.js";
+import { chooseDirDialog } from "./dialog.js";
 
 function populateGame() {
-    const driver = new Driver();
     const oldContainer = document.querySelector('.main-container');
     oldContainer.remove();
 
@@ -30,6 +30,17 @@ function populateGame() {
     boardContainer.classList.add('board', 'container');
     container.appendChild(boardContainer);
 
+    const shipDock = document.createElement('div');
+    shipDock.classList.add('ship-dock');
+    boardContainer.appendChild(shipDock);
+
+
+
+    
+
+
+
+
     const myBoard = document.createElement('div');
     myBoard.classList.add('my-board');
     // myBoard.textContent = 'empty text';
@@ -40,16 +51,74 @@ function populateGame() {
     // comBoard.textContent = 'empty text';
     boardContainer.appendChild(comBoard);
 
+
+
     fillBoards([myBoard, comBoard]);
+
+    const driver = new Driver();
+
+    const twoContainer = document.createElement('div');
+    twoContainer.classList.add('ship-container', 'two2');
+    shipDock.appendChild(twoContainer);
+
+    const threeContainer = document.createElement('div');
+    threeContainer.classList.add('ship-container', 'three3');
+    shipDock.appendChild(threeContainer);
+
+    const fourContainer = document.createElement('div');
+    fourContainer.classList.add('ship-container', 'four4');
+    shipDock.appendChild(fourContainer);
+
+    const fiveContainer = document.createElement('div');
+    fiveContainer.classList.add('ship-container', 'five5');
+    shipDock.appendChild(fiveContainer);
+
+    const shipConts = [twoContainer, threeContainer, fourContainer, fiveContainer];
+
+    for (let cont of shipConts) {
+        const contClass = cont.classList[1];
+        const shipNum = +contClass.slice(contClass.length - 1, contClass.length);       
+        
+        const mockShip = document.createElement('div');
+        mockShip.classList.add('mock-ship', `ship-${shipNum}`);
+        mockShip.type = 'button'
+        mockShip.addEventListener('click', function () {
+            selectShip(this, driver);
+        })
+        cont.appendChild(mockShip);
+
+        for (let i = 0; i < shipNum; i++) {
+            const shipPiece = document.createElement('div');
+            shipPiece.classList.add('ship-piece');
+            mockShip.appendChild(shipPiece);
+        }
+    }
 
     const comSquares = document.querySelectorAll('.com-board .square');
     for (let square of comSquares) {
-        square.addEventListener('click', function() {
-            driver.playTurn(this);
-        });
+        square.addEventListener('click', function() {squareClick(driver, this)});
     }
 
+}
 
+function selectShip(ship, driver) {
+    const shipClass = ship.classList[1];
+    const shipLength = shipClass.slice(shipClass.length - 1, shipClass.length);
+    ship.classList.add('selected-ship');
+
+    const realSquares = document.querySelectorAll('.my-board .square');
+    for (let square of realSquares) {
+        const squareClass = square.classList[1];
+        const squareCoord = [squareClass.slice(2, 3), squareClass.slice(4, 5)];
+        square.addEventListener('click', function () {
+            // driver.setRealShip(shipLength, squareCoord);
+            chooseDirDialog(driver, shipLength, squareCoord);
+        })
+    }
+}
+
+function squareClick(driver, square) {
+    driver.playTurn(square);
 
 }
 
@@ -70,11 +139,11 @@ function fillBoards(boards) {
 }
 
 function showHit(square) {
-    square.classList.add('hit');
+    square.classList.add('hit', 'done-disabled');
 }
 
 function showMiss(square) {
-    square.classList.add('miss');
+    square.classList.add('miss', 'done-disabled');
 }
 
 

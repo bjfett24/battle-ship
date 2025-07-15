@@ -9,7 +9,9 @@ class GameBoard {
             }
         }
         this.misses = [];
+        this.plays = [];
         }
+        
 
     getMatrix() {
         return this.matrix;
@@ -104,11 +106,16 @@ class GameBoard {
     }
 
     receiveAttack(coord) {
+        this.plays.push(coord);
         if (this.matrix[coord[0]][coord[1]] == 'empty') {
             this.misses.push(coord);
         } else {
             this.matrix[coord[0]][coord[1]].hit();
         }
+    }
+
+    getPlays() {
+        return this.plays;
     }
 
     inspectBoard(coord) {
@@ -165,6 +172,17 @@ class GameBoard {
             }
         }
         return result;
+    }
+
+    includesPlay(coord) {
+        const plays = this.plays;
+        let result = false;
+        for (let play of plays) {
+            if (play[0] == coord[0] && play[1] == coord[1]) {
+                result = true;
+                break;
+            }
+        }
     }
 }
 

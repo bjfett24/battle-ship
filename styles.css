@@ -12,6 +12,7 @@ body, :root {
 .board.container {
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
 }
 
 .my-board, .com-board {
@@ -45,4 +46,50 @@ body, :root {
 
 .square.miss {
     background-color: black;
+}
+
+/* In your CSS file or <style> block */
+.com-board .square.disabled {
+    pointer-events: none; /* Prevents all mouse/touch events */
+    opacity: 0.8; /* Optional: Visually indicate it's disabled */
+    cursor: not-allowed; /* Optional: Change cursor */
+}
+
+.done-disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+
+.ship-container {
+    width: 6rem;
+    height: 4rem;
+    padding: 3rem;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.mock-ship {
+    display: flex;
+    justify-content: center;
+    background-color: blue;
+
+}
+
+.mock-ship:hover {
+    transform: translateY(-3px);
+    background-color: rgba(0, 0, 255, 0.638);
+    box-shadow: 4px 6px 12px 3px rgb(0, 0, 0, 0.20);
+
+
+}
+
+.ship-piece {
+    border: 1px solid black;
+    width: 2rem;
+    height: 2rem;    
+
 }
