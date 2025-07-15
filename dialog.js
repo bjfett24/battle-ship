@@ -73,9 +73,6 @@ const chooseDirDialog = function (driver, length, coord) {
         }
 
         driver.setRealShip(coord, length, direction);
-        
-        
-        
         popUp.close(); // Close the dialog
 
     })

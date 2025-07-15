@@ -8,6 +8,7 @@ class Driver {
         this.comPlayerBoard;
         this.comSquares = document.querySelectorAll('.com-board .square');
         this.placedShips = [];
+        this.selectedShipForPlacement = { length: null, mockShipElement: null };
     }
     setShips() {
         const setShips = document.querySelector('.set-ships');
@@ -55,7 +56,6 @@ class Driver {
     }
 
     playTurn(square) {
-        console.log(this.comSquares)
         for (let sq of this.comSquares) {
             sq.classList.add('disabled');
         }

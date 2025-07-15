@@ -104,15 +104,36 @@ function populateGame() {
 function selectShip(ship, driver) {
     const shipClass = ship.classList[1];
     const shipLength = shipClass.slice(shipClass.length - 1, shipClass.length);
+   
+    const previouslySelected = document.querySelector('.selected-ship');
+    if (previouslySelected) {
+        previouslySelected.classList.remove('selected-ship');
+    }
     ship.classList.add('selected-ship');
 
     const realSquares = document.querySelectorAll('.my-board .square');
+
+    for (let square of realSquares) {
+        // You might need to store the original listener function
+        // or use a flag to prevent re-adding if you only want one type of listener.
+        // For simplicity, a cleaner way might be to remove the event listener
+        // that specifically calls chooseDirDialog after a ship is placed.
+        // However, a more direct fix for repeated calls from *selecting a ship*:
+        // Create a named function for the event listener to be able to remove it.
+        // Let's refactor slightly:
+        square.removeEventListener('click', handleSquareClickForShipPlacement); // Remove previous listeners
+    }
+
     for (let square of realSquares) {
         const squareClass = square.classList[1];
         const squareCoord = [squareClass.slice(2, 3), squareClass.slice(4, 5)];
-        square.addEventListener('click', function () {
-            // driver.setRealShip(shipLength, squareCoord);
+        square.addEventListener('click', function handleSquareClickForShipPlacement() {
+            ship.classList.remove('selected-ship'); // Remove selection after a square is clicked
             chooseDirDialog(driver, shipLength, squareCoord);
+
+            for (let s of realSquares) {
+                s.removeEventListener('click', handleSquareClickForShipPlacement);
+            }
         })
     }
 }
