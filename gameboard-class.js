@@ -83,6 +83,7 @@ class GameBoard {
         const newShip = new Ship(length);
 
         if (direction == 'h') {
+            console.log(coord[0] + length - 1)
             if (coord[0] + length - 1 > 9) {
                 for (let i = 9 - (length - 1); i <= 9; i++) {
                     this.matrix[i][coord[1]] = newShip;

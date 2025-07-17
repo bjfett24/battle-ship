@@ -102,8 +102,9 @@ function populateGame() {
 }
 
 function selectShip(ship, driver) {
+    const pointer = 'dummy';
     const shipClass = ship.classList[1];
-    const shipLength = shipClass.slice(shipClass.length - 1, shipClass.length);
+    const shipLength = +shipClass.slice(shipClass.length - 1, shipClass.length);
    
     const previouslySelected = document.querySelector('.selected-ship');
     if (previouslySelected) {
@@ -111,31 +112,45 @@ function selectShip(ship, driver) {
     }
     ship.classList.add('selected-ship');
 
-    const realSquares = document.querySelectorAll('.my-board .square');
 
-    for (let square of realSquares) {
-        // You might need to store the original listener function
-        // or use a flag to prevent re-adding if you only want one type of listener.
-        // For simplicity, a cleaner way might be to remove the event listener
-        // that specifically calls chooseDirDialog after a ship is placed.
-        // However, a more direct fix for repeated calls from *selecting a ship*:
-        // Create a named function for the event listener to be able to remove it.
-        // Let's refactor slightly:
-        square.removeEventListener('click', handleSquareClickForShipPlacement); // Remove previous listeners
+    const realSquares = document.querySelectorAll('.my-board .square');
+    const lastShip = driver.getPlacingProcess();
+    if (lastShip['start'] === true) {
+        for (let square of realSquares) {
+            square.classList.remove('done-disabled');
+            // const squareClass = square.classList[1];
+            // const squareCoord = [+squareClass.slice(2, 3), +squareClass.slice(4, 5)];
+            const oldBoundFunc = driver.getBoundFuncRef(square);
+            square.removeEventListener('click', oldBoundFunc);
+        }
     }
+
+
+
 
     for (let square of realSquares) {
         const squareClass = square.classList[1];
-        const squareCoord = [squareClass.slice(2, 3), squareClass.slice(4, 5)];
-        square.addEventListener('click', function handleSquareClickForShipPlacement() {
-            ship.classList.remove('selected-ship'); // Remove selection after a square is clicked
-            chooseDirDialog(driver, shipLength, squareCoord);
-
-            for (let s of realSquares) {
-                s.removeEventListener('click', handleSquareClickForShipPlacement);
-            }
-        })
+        const squareCoord = [+squareClass.slice(2, 3), +squareClass.slice(4, 5)];
+        const newBoundFunc = handleSquareClickForShipPlacement.bind(pointer, ship, driver, shipLength, squareCoord);
+        driver.setBoundFuncRef(square, newBoundFunc);
+        console.log(driver.getBoundFuncRef(square));
+        square.addEventListener('click', newBoundFunc);
     }
+
+
+    
+    
+}
+
+function handleSquareClickForShipPlacement(ship, driver, shipLength, squareCoord) {
+    const realSquares = document.querySelectorAll('.my-board .square');
+    ship.classList.remove('selected-ship'); // Remove selection after a square is clicked
+    chooseDirDialog(driver, shipLength, squareCoord);
+    driver.startPlacingProcess();
+    for (let s of realSquares) {
+        s.classList.add('done-disabled');    
+    }
+
 }
 
 function squareClick(driver, square) {
@@ -166,6 +181,7 @@ function showHit(square) {
 function showMiss(square) {
     square.classList.add('miss', 'done-disabled');
 }
+
 
 
 export { populateGame, showHit, showMiss };

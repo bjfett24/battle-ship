@@ -8,8 +8,18 @@ class Driver {
         this.comPlayerBoard;
         this.comSquares = document.querySelectorAll('.com-board .square');
         this.placedShips = [];
-        this.selectedShipForPlacement = { length: null, mockShipElement: null };
+        this.placingProcess = { 'start': null };
+        this.boundFuncRef = new Map();
     }
+
+    setBoundFuncRef(square, newFunc) {
+        this.boundFuncRef.set(square, newFunc);
+    }
+
+    getBoundFuncRef(square) {
+        return this.boundFuncRef.get(square);
+    }
+
     setShips() {
         const setShips = document.querySelector('.set-ships');
         setShips.remove();
@@ -143,6 +153,14 @@ class Driver {
             const square = document.querySelector(`.sq${ship[0]}-${ship[1]}`);
             square.classList.add('ship');
         }
+    }
+
+    startPlacingProcess() {
+        this.placingProcess['start'] = true;
+    }
+
+    getPlacingProcess() {
+        return this.placingProcess;
     }
 }
 
