@@ -4,8 +4,10 @@ import { showHit, showMiss, populateGame} from "./game-page.js";
 class Driver {
     constructor() {
         this.gameStatus = undefined;
-        this.realPlayerBoard;
-        this.comPlayerBoard;
+        this.realPlayer = new Player('real');
+        this.comPlayer = new Player('com');
+        this.realPlayerBoard = this.realPlayer.board;
+        this.comPlayerBoard = this.comPlayer.board;
         this.comSquares = document.querySelectorAll('.com-board .square');
         this.placedShips = [];
         this.placingProcess = { 'start': null };
@@ -20,6 +22,15 @@ class Driver {
         return this.boundFuncRef.get(square);
     }
 
+    clearAllSquareHandlers() {
+        // Iterate over the Map and remove listeners
+        this.myBoardSquareHandlers.forEach((handler, square) => {
+            square.removeEventListener('click', handler);
+            square.classList.remove('done-disabled'); // Also remove done-disabled here
+        });
+        this.myBoardSquareHandlers.clear(); // Clear the map
+    }
+
     setShips() {
         const setShips = document.querySelector('.set-ships');
         setShips.remove();
@@ -31,16 +42,12 @@ class Driver {
         const buttonBox = document.querySelector('.button-box');
         buttonBox.appendChild(resetGame);
 
-        const realPlayer = new Player('real');
-        const comPlayer = new Player('com');
+        // const realPlayer = new Player('real');
+        // realPlayer.board.populateShips();
 
-        realPlayer.board.populateShips();
-        comPlayer.board.populateShips();
+        this.comPlayerBoard.populateShips();
 
-        this.realPlayerBoard = realPlayer.board;
-        this.comPlayerBoard = comPlayer.board;
-
-        this.populateShipsDOM(realPlayer);
+        // this.populateShipsDOM(realPlayer);
 
     }
 
