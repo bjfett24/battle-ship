@@ -18,13 +18,13 @@ function populateGame() {
     buttonBox.classList.add('button-box');
     container.appendChild(buttonBox);
 
-    const setShips = document.createElement('button');
-    setShips.classList.add('set-ships');
-    setShips.textContent = 'Place Ships';
-    setShips.addEventListener('click', () => {
-        driver.setShips();
-    });
-    buttonBox.appendChild(setShips);
+    // const resetShips = document.createElement('button');
+    // resetShips.classList.add('set-ships');
+    // resetShips.textContent = 'Play Game';
+    // resetShips.addEventListener('click', () => {
+    //     driver.setShips();
+    // });
+    // buttonBox.appendChild(resetShips);
 
     const boardContainer = document.createElement('div');
     boardContainer.classList.add('board', 'container');
@@ -133,7 +133,6 @@ function selectShip(ship, driver) {
         const squareCoord = [+squareClass.slice(2, 3), +squareClass.slice(4, 5)];
         const newBoundFunc = handleSquareClickForShipPlacement.bind(pointer, ship, driver, shipLength, squareCoord);
         driver.setBoundFuncRef(square, newBoundFunc);
-        console.log(driver.getBoundFuncRef(square));
         square.addEventListener('click', newBoundFunc);
     }
 
@@ -147,6 +146,7 @@ function handleSquareClickForShipPlacement(ship, driver, shipLength, squareCoord
     ship.classList.remove('selected-ship'); // Remove selection after a square is clicked
     chooseDirDialog(driver, shipLength, squareCoord);
     driver.startPlacingProcess();
+    ship.classList.add('ship-disabled');
     for (let s of realSquares) {
         s.classList.add('done-disabled');    
     }
@@ -182,6 +182,15 @@ function showMiss(square) {
     square.classList.add('miss', 'done-disabled');
 }
 
+function resetButton() {
+    const resetGame = document.createElement('button');
+    resetGame.classList.add('reset-game');
+    resetGame.textContent = 'Reset Game';
+    resetGame.addEventListener('click', populateGame);
+    const buttonBox = document.querySelector('.button-box');
+    buttonBox.appendChild(resetGame);
+}
 
 
-export { populateGame, showHit, showMiss };
+
+export { populateGame, showHit, showMiss, resetButton };

@@ -35,12 +35,7 @@ class Driver {
         const setShips = document.querySelector('.set-ships');
         setShips.remove();
 
-        const resetGame = document.createElement('button');
-        resetGame.classList.add('reset-game');
-        resetGame.textContent = 'Reset Game';
-        resetGame.addEventListener('click', populateGame);
-        const buttonBox = document.querySelector('.button-box');
-        buttonBox.appendChild(resetGame);
+
 
         // const realPlayer = new Player('real');
         // realPlayer.board.populateShips();
@@ -63,10 +58,21 @@ class Driver {
         this.placedShips.push(length);
 
         if (this.placedShips.length == 4) {
-            const comPlayer = new Player('com');
-            comPlayer.board.populateShips();
-            this.comPlayerBoard = comPlayer.board;
+            const readyButton = document.createElement('button');
+            readyButton.classList.add('ready');
+            readyButton.textContent = 'Ready';
+            readyButton.addEventListener('click', () => {
+                this.comPlayerBoard.populateShips();
+            })
+
+
+            const buttonBox = document.querySelector('.button-box');
+            buttonBox.appendChild(readyButton)
+            
+            
         }
+
+
 
 
 
@@ -79,8 +85,6 @@ class Driver {
 
 
         const classList = square.classList;
-        console.log(square)
-        console.log(classList);
         const coord = [classList[1].slice(2, 3), classList[1].slice(4, 5)];
         const isHit = this.checkComSquare(coord);
         this.comPlayerBoard.receiveAttack(coord);

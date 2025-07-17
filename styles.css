@@ -60,6 +60,12 @@ body, :root {
     cursor: not-allowed;
 }
 
+.mock-ship.ship-disabled {
+    pointer-events: none; /* Prevents all mouse/touch events */
+    background-color: grey;
+    cursor: not-allowed; /* Optional: Change cursor */
+}
+
 
 .ship-container {
     width: 6rem;
