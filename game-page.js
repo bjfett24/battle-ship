@@ -142,14 +142,16 @@ function selectShip(ship, driver) {
 }
 
 function handleSquareClickForShipPlacement(ship, driver, shipLength, squareCoord) {
-    const realSquares = document.querySelectorAll('.my-board .square');
-    ship.classList.remove('selected-ship'); // Remove selection after a square is clicked
-    chooseDirDialog(driver, shipLength, squareCoord);
-    driver.startPlacingProcess();
-    ship.classList.add('ship-disabled');
-    for (let s of realSquares) {
-        s.classList.add('done-disabled');    
-    }
+
+    chooseDirDialog(driver, ship, shipLength, squareCoord);
+    
+    // ship.classList.remove('selected-ship'); // Remove selection after a square is clicked
+    // const realSquares = document.querySelectorAll('.my-board .square');
+    // driver.startPlacingProcess();
+    // ship.classList.add('ship-disabled');
+    // for (let s of realSquares) {
+    //     s.classList.add('done-disabled');    
+    // }
 
 }
 

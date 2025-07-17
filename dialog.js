@@ -1,6 +1,6 @@
-import { Driver } from "./driver.js";
 
-const chooseDirDialog = function (driver, length, coord) {
+
+const chooseDirDialog = function (driver, ship, length, coord) {
     const popUp = document.createElement('dialog');
     popUp.classList.add('popUp');
     document.body.appendChild(popUp);
@@ -38,6 +38,7 @@ const chooseDirDialog = function (driver, length, coord) {
     const horizInput = document.createElement('input');
     horizInput.type = 'radio';
     horizInput.id = 'horiz';
+    horizInput.name = 'shipDirection';
     dirHoriz.appendChild(horizInput);
 
     
@@ -55,6 +56,7 @@ const chooseDirDialog = function (driver, length, coord) {
     const vertInput = document.createElement('input');
     vertInput.type = 'radio';
     vertInput.id = 'vert';
+    vertInput.name = 'shipDirection'
     dirVert.appendChild(vertInput);
 
 
@@ -66,14 +68,61 @@ const chooseDirDialog = function (driver, length, coord) {
 
     dirForm.addEventListener('submit', () => {
         let direction;
-        if (horizInput.checked) {
-            direction = 'h';
+
+        if (horizInput.checked || vertInput.checked) {
+            if (horizInput.checked) {
+                direction = 'h';
+            } else {
+                direction = 'v';
+            }   
+            
+            if (driver.realPlayerBoard.checkForClearing(coord, direction, length)) {
+                ship.classList.remove('selected-ship'); // Remove selection after a square is clicked
+                const realSquares = document.querySelectorAll('.my-board .square');
+                driver.startPlacingProcess();
+                ship.classList.add('ship-disabled');
+                for (let s of realSquares) {
+                    s.classList.add('done-disabled');    
+                }
+
+                driver.setRealShip(coord, length, direction);
+                popUp.close(); // Close the dialog
+            } else {
+                const collision = document.createElement('div');
+                collision.style.cssText = `
+                    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+                    background-color: #ffdddd; color: #d8000c; padding: 10px 20px;
+                    border: 1px solid #d8000c; border-radius: 5px; z-index: 1001;
+                    font-family: sans-serif;
+                `;
+                collision.textContent = 'This placement causes a collision. Try again.';
+                document.body.appendChild(collision);
+                setTimeout(() => {
+                    collision.remove();
+                }, 3000); // Remove after 3 seconds
+            }
+
+
         } else {
-            direction = 'v';
+            const messageBox = document.createElement('div');
+            messageBox.style.cssText = `
+                position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+                background-color: #ffdddd; color: #d8000c; padding: 10px 20px;
+                border: 1px solid #d8000c; border-radius: 5px; z-index: 1001;
+                font-family: sans-serif;
+            `;
+            messageBox.textContent = 'Please set a direction for your ship.';
+            document.body.appendChild(messageBox);
+            setTimeout(() => {
+                messageBox.remove();
+            }, 3000); // Remove after 3 seconds
         }
 
-        driver.setRealShip(coord, length, direction);
-        popUp.close(); // Close the dialog
+
+
+        
+
+
 
     })
 

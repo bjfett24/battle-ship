@@ -17,6 +17,29 @@ class GameBoard {
         return this.matrix;
     }
 
+    checkForClearing(coord, direction, length) {
+        let clear = true;
+        if (direction === 'h') {
+            for (let i = 1; i < length; i++) {
+                const currentCoord = [coord[0] + i, coord[1]]
+                if (this.includesShip(currentCoord)) {
+                    clear = false;
+                    break;
+                }
+            }
+        } else if (direction === 'v') {
+            for (let i = 1; i < length; i++) {
+                const currentCoord = [coord[0], coord[1] + i]
+                if (this.includesShip(currentCoord)) {
+                    clear = false;
+                    break;
+                }
+            }
+        }
+
+        return clear;
+    }
+
     populateShips() {
         for (let i = 2; i < 6; i++) {
             let direction;

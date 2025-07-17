@@ -1,5 +1,5 @@
 import { Player } from "./player-class.js";
-import { showHit, showMiss, populateGame} from "./game-page.js";
+import { showHit, showMiss, populateGame, resetButton} from "./game-page.js";
 
 class Driver {
     constructor() {
@@ -63,6 +63,8 @@ class Driver {
             readyButton.textContent = 'Ready';
             readyButton.addEventListener('click', () => {
                 this.comPlayerBoard.populateShips();
+                readyButton.remove();
+                resetButton();
             })
 
 
@@ -97,6 +99,10 @@ class Driver {
 
         if (this.comPlayerBoard.checkEnd() == true) {
             console.log('End of Game');
+            const squares = document.querySelectorAll('.squares');
+            for (let s of squares) {
+                s.classList.add('done-disabled');
+            }
         }
 
         setTimeout(() => {
@@ -129,26 +135,28 @@ class Driver {
 
         if (this.realPlayerBoard.checkEnd() == true) {
             console.log('End of Game');
+            const squares = document.querySelectorAll('.squares');
+            for (let s of squares) {
+                s.classList.add('done-disabled');
+            }
+            
+
         }
 
     }
 
     checkComSquare(coord) {
         if (this.comPlayerBoard.inspectBoard(coord) != 'empty') {
-            console.log('hit');
             return true;
         } else {
-            console.log('miss');
             return false;
         }
     }
 
     checkRealPlayerSquare(coord) {
         if (this.realPlayerBoard.inspectBoard(coord) != 'empty') {
-            console.log('hit');
             return true;
         } else {
-            console.log('miss');
             return false;
         }
     }

@@ -60,6 +60,12 @@ body, :root {
     cursor: not-allowed;
 }
 
+.square.done-disabled {
+    pointer-events: none; /* Prevents all mouse/touch events */
+    opacity: 0.8; /* Optional: Visually indicate it's disabled */
+    cursor: not-allowed; /* Optional: Change cursor */
+}
+
 .mock-ship.ship-disabled {
     pointer-events: none; /* Prevents all mouse/touch events */
     background-color: grey;
