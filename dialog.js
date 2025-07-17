@@ -85,7 +85,7 @@ const chooseDirDialog = function (driver, ship, length, coord) {
                     s.classList.add('done-disabled');    
                 }
 
-                driver.setRealShip(coord, length, direction);
+                driver.setRealShip(driver, coord, length, direction, 'real');
                 popUp.close(); // Close the dialog
             } else {
                 const collision = document.createElement('div');

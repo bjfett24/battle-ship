@@ -1,6 +1,6 @@
 import { Ship } from './ship-class.js';
 class GameBoard {
-    constructor() {
+    constructor(type = null) {
         this.matrix = [];
         for (let i = 0; i < 10; i++) {
             this.matrix[i] = new Array(10);
@@ -10,6 +10,8 @@ class GameBoard {
         }
         this.misses = [];
         this.plays = [];
+        this.shipObjects = [];
+        this.type = type;
         }
         
 
@@ -59,8 +61,10 @@ class GameBoard {
                 }
             }
             coord = this.moveShip(coord, i, direction);
-            this.placeShip(coord, i, direction);
+            this.placeShip(coord, i, direction, 'com');
         }
+
+        console.log(this.matrix);
     }
 
     moveShip(coord, length, direction) {
@@ -101,8 +105,10 @@ class GameBoard {
         }
     }
 
-    placeShip(coord, length, direction) {
-        const newShip = new Ship(length);
+    placeShip(coord, length, direction, type = null) {
+        const newShip = new Ship(length, coord, direction, type);
+
+        this.shipObjects.push(newShip);
 
         if (direction == 'h') {
             if (coord[0] + length - 1 > 9) {
@@ -168,10 +174,9 @@ class GameBoard {
     }
 
     checkEnd() {
-        const ships = this.getShips();
+        const ships = this.shipObjects;
         const liveShips = ships.filter(ship => {
-            const shipObj = this.inspectBoard(ship);
-            if (shipObj.sunk == false) {
+            if (ship.sunk == false) {
                 return true;
             } else {
                 return false;

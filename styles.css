@@ -41,7 +41,7 @@ body, :root {
 }
 
 .square.hit {
-    background-color: red;
+    background-color: yellow;
 }
 
 .square.miss {
@@ -110,4 +110,8 @@ body, :root {
     background-color: rgb(0, 110, 255);
     box-shadow: 4px 6px 12px 3px rgb(0, 0, 0, 0.20);
     transform: translateY(-3px);
+}
+
+.square.sunk {
+    background-color: red;
 }

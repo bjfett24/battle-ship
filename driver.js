@@ -1,5 +1,5 @@
 import { Player } from "./player-class.js";
-import { showHit, showMiss, populateGame, resetButton} from "./game-page.js";
+import { showHit, showMiss, squareClick, resetButton} from "./game-page.js";
 
 class Driver {
     constructor() {
@@ -46,10 +46,10 @@ class Driver {
 
     }
 
-    setRealShip(coord, length, direction) {
+    setRealShip(driver, coord, length, direction, type) {
 
         const realPlayer = new Player('real');
-        realPlayer.board.placeShip(coord, length, direction);
+        realPlayer.board.placeShip(coord, length, direction, type);
 
         this.realPlayerBoard = realPlayer.board;
 
@@ -70,6 +70,12 @@ class Driver {
 
             const buttonBox = document.querySelector('.button-box');
             buttonBox.appendChild(readyButton)
+
+            const comSquares = document.querySelectorAll('.com-board .square');
+            for (let square of comSquares) {
+                square.addEventListener('click', function() {squareClick(driver, this)});
+                square.classList.remove('done-disabled')
+            }
             
             
         }

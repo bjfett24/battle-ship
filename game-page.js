@@ -94,10 +94,7 @@ function populateGame() {
         }
     }
 
-    const comSquares = document.querySelectorAll('.com-board .square');
-    for (let square of comSquares) {
-        square.addEventListener('click', function() {squareClick(driver, this)});
-    }
+
 
 }
 
@@ -193,6 +190,37 @@ function resetButton() {
     buttonBox.appendChild(resetGame);
 }
 
+function sunkDisplay(coord, direction, length, type) {
+    console.log(type);
+    if (direction === 'h') {
+        for (let i = 0; i < length; i++) {
+            const currentCoord = [coord[0] + i, coord[1]];
+            if (type === 'real') {
+                const square = document.querySelector(`.my-board .sq${currentCoord[0]}-${currentCoord[1]}`);
+                square.classList.add('sunk');
+                square.classList.remove('hit');
+            } else if (type === 'com') {
+                const square = document.querySelector(`.com-board .sq${currentCoord[0]}-${currentCoord[1]}`);
+                square.classList.add('sunk');
+                square.classList.remove('hit');
+            }
+        }
+    } else if (direction === 'v') {
+        for (let i = 0; i < length; i++) {
+            const currentCoord = [coord[0], coord[1] + i];
+            if (type === 'real') {
+                const square = document.querySelector(`.my-board .sq${currentCoord[0]}-${currentCoord[1]}`);
+                square.classList.add('sunk');
+                square.classList.remove('hit');
+            } else if (type === 'com') {
+                const square = document.querySelector(`.com-board .sq${currentCoord[0]}-${currentCoord[1]}`);
+                square.classList.add('sunk');
+                square.classList.remove('hit');
+            }
+        }
+    }
+}
 
 
-export { populateGame, showHit, showMiss, resetButton };
+
+export { populateGame, showHit, showMiss, resetButton, squareClick, sunkDisplay};
