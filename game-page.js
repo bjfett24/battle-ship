@@ -18,14 +18,6 @@ function populateGame() {
     buttonBox.classList.add('button-box');
     container.appendChild(buttonBox);
 
-    // const resetShips = document.createElement('button');
-    // resetShips.classList.add('set-ships');
-    // resetShips.textContent = 'Play Game';
-    // resetShips.addEventListener('click', () => {
-    //     driver.setShips();
-    // });
-    // buttonBox.appendChild(resetShips);
-
     const boardContainer = document.createElement('div');
     boardContainer.classList.add('board', 'container');
     container.appendChild(boardContainer);
@@ -34,24 +26,13 @@ function populateGame() {
     shipDock.classList.add('ship-dock');
     boardContainer.appendChild(shipDock);
 
-
-
-    
-
-
-
-
     const myBoard = document.createElement('div');
     myBoard.classList.add('my-board');
-    // myBoard.textContent = 'empty text';
     boardContainer.appendChild(myBoard);
 
     const comBoard = document.createElement('div');
     comBoard.classList.add('com-board');
-    // comBoard.textContent = 'empty text';
     boardContainer.appendChild(comBoard);
-
-
 
     fillBoards([myBoard, comBoard]);
 
@@ -75,6 +56,11 @@ function populateGame() {
 
     const shipConts = [twoContainer, threeContainer, fourContainer, fiveContainer];
 
+    popMockShips(shipConts, driver);
+
+}
+
+function popMockShips(shipConts, driver) {
     for (let cont of shipConts) {
         const contClass = cont.classList[1];
         const shipNum = +contClass.slice(contClass.length - 1, contClass.length);       
@@ -93,13 +79,9 @@ function populateGame() {
             mockShip.appendChild(shipPiece);
         }
     }
-
-
-
 }
 
 function selectShip(ship, driver) {
-    const pointer = 'dummy';
     const shipClass = ship.classList[1];
     const shipLength = +shipClass.slice(shipClass.length - 1, shipClass.length);
    
@@ -108,53 +90,43 @@ function selectShip(ship, driver) {
         previouslySelected.classList.remove('selected-ship');
     }
     ship.classList.add('selected-ship');
-
-
+    
     const realSquares = document.querySelectorAll('.my-board .square');
-    const lastShip = driver.getPlacingProcess();
-    if (lastShip['start'] === true) {
-        for (let square of realSquares) {
-            square.classList.remove('done-disabled');
-            // const squareClass = square.classList[1];
-            // const squareCoord = [+squareClass.slice(2, 3), +squareClass.slice(4, 5)];
-            const oldBoundFunc = driver.getBoundFuncRef(square);
-            square.removeEventListener('click', oldBoundFunc);
-        }
-    }
 
+    removeSquarePlacing(realSquares, driver);
+    addSquarePlacing(realSquares, ship, driver, shipLength);
+}
 
-
-
+function addSquarePlacing(realSquares, ship, driver, shipLength) {
+    const pointer = 'dummy';
     for (let square of realSquares) {
         const squareClass = square.classList[1];
         const squareCoord = [+squareClass.slice(2, 3), +squareClass.slice(4, 5)];
         const newBoundFunc = handleSquareClickForShipPlacement.bind(pointer, ship, driver, shipLength, squareCoord);
         driver.setBoundFuncRef(square, newBoundFunc);
         square.addEventListener('click', newBoundFunc);
+    }  
+}
+
+function removeSquarePlacing(realSquares, driver) {
+    const lastShip = driver.getPlacingProcess();
+    if (lastShip['start'] === true) {
+        for (let square of realSquares) {
+            square.classList.remove('done-disabled');
+            const oldBoundFunc = driver.getBoundFuncRef(square);
+            square.removeEventListener('click', oldBoundFunc);
+        }
     }
-
-
-    
-    
 }
 
 function handleSquareClickForShipPlacement(ship, driver, shipLength, squareCoord) {
 
     chooseDirDialog(driver, ship, shipLength, squareCoord);
-    
-    // ship.classList.remove('selected-ship'); // Remove selection after a square is clicked
-    // const realSquares = document.querySelectorAll('.my-board .square');
-    // driver.startPlacingProcess();
-    // ship.classList.add('ship-disabled');
-    // for (let s of realSquares) {
-    //     s.classList.add('done-disabled');    
-    // }
 
 }
 
 function squareClick(driver, square) {
     driver.playTurn(square);
-
 }
 
 function fillBoards(boards) {
@@ -221,6 +193,36 @@ function sunkDisplay(coord, direction, length, type) {
     }
 }
 
+function showHitOrMiss(isHit, square) {
+    if (isHit) {
+        showHit(square);
+    } else {
+        showMiss(square);
+    }
+}
+
+function shipSelection(ship, selected) {
+    if (selected) {
+        ship.classList.add('selected-ship')
+    } else {
+        ship.classList.remove('selected-ship');
+    }
+}
+
+function disableShip(ship) {
+    ship.classList.add('ship-disabled');
+}
+
+function handleSquareAbility(squares, enable) {
+    for (let s of squares) {
+        if (enable) {
+            s.classList.remove('done-disabled');
+        } else {
+            s.classList.add('done-disabled');   
+        }
+    }
+}
 
 
-export { populateGame, showHit, showMiss, resetButton, squareClick, sunkDisplay};
+
+export { populateGame, showHit, showMiss, resetButton, squareClick, sunkDisplay, popMockShips, shipSelection, disableShip, handleSquareAbility, showHitOrMiss};

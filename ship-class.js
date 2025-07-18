@@ -10,6 +10,8 @@ class Ship {
         this.type = type;
     }
 
+
+
     hit() {
         this.hits++;
         if (this.hits >= this.length) {
