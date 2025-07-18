@@ -18,9 +18,16 @@ function populateGame() {
     buttonBox.classList.add('button-box');
     container.appendChild(buttonBox);
 
+    resetButton();
+
     const boardContainer = document.createElement('div');
     boardContainer.classList.add('board', 'container');
     container.appendChild(boardContainer);
+
+    const messageBoard = document.createElement('div');
+    messageBoard.classList.add('message-board');
+    messageBoard.textContent = 'Place Your Ships!';
+    boardContainer.appendChild(messageBoard);
 
     const shipDock = document.createElement('div');
     shipDock.classList.add('ship-dock');
@@ -112,7 +119,7 @@ function removeSquarePlacing(realSquares, driver) {
     const lastShip = driver.getPlacingProcess();
     if (lastShip['start'] === true) {
         for (let square of realSquares) {
-            square.classList.remove('done-disabled');
+            square.classList.remove('place-disabled');
             const oldBoundFunc = driver.getBoundFuncRef(square);
             square.removeEventListener('click', oldBoundFunc);
         }
@@ -153,13 +160,18 @@ function showMiss(square) {
     square.classList.add('miss', 'done-disabled');
 }
 
-function resetButton() {
-    const resetGame = document.createElement('button');
-    resetGame.classList.add('reset-game');
-    resetGame.textContent = 'Reset Game';
-    resetGame.addEventListener('click', populateGame);
-    const buttonBox = document.querySelector('.button-box');
-    buttonBox.appendChild(resetGame);
+function resetButton(command = undefined) {
+    if (command === 'remove') {
+        const resetButton = document.querySelector('.reset-game');
+        resetButton.remove();
+    } else {
+        const resetGame = document.createElement('button');
+        resetGame.classList.add('reset-game');
+        resetGame.textContent = 'Reset Game';
+        resetGame.addEventListener('click', populateGame);
+        const buttonBox = document.querySelector('.button-box');
+        buttonBox.appendChild(resetGame);
+    }
 }
 
 function sunkDisplay(coord, direction, length, type) {
@@ -223,6 +235,16 @@ function handleSquareAbility(squares, enable) {
     }
 }
 
+function squarePlacement(squares, enable) {
+    for (let s of squares) {
+        if (enable) {
+            s.classList.remove('place-disabled');
+        } else {
+            s.classList.add('place-disabled');   
+        }
+    }
+}
 
 
-export { populateGame, showHit, showMiss, resetButton, squareClick, sunkDisplay, popMockShips, shipSelection, disableShip, handleSquareAbility, showHitOrMiss};
+
+export { populateGame, showHit, showMiss, resetButton, squareClick, sunkDisplay, popMockShips, shipSelection, disableShip, handleSquareAbility, showHitOrMiss, squarePlacement};

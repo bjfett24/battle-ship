@@ -60,6 +60,9 @@ class Driver {
 
     startGame(driver) {
         const comSquares = document.querySelectorAll('.com-board .square');
+
+        resetButton('remove');
+        
         this.populateReadyButton();
 
         handleSquareAbility(comSquares, false)

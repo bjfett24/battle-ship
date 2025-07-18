@@ -1,4 +1,4 @@
-import { shipSelection, disableShip, handleSquareAbility } from "./game-page.js";
+import { shipSelection, disableShip, squarePlacement } from "./game-page.js";
 
 const chooseDirDialog = function (driver, ship, length, coord) {
     const popUp = document.createElement('dialog');
@@ -110,7 +110,7 @@ function checkCollision(driver, ship, length, coord, direction) {
         const realSquares = document.querySelectorAll('.my-board .square');
         driver.startPlacingProcess();
         disableShip(ship);
-        handleSquareAbility(realSquares, false);
+        squarePlacement(realSquares, false);
 
         driver.setRealShip(driver, coord, length, direction, 'real');
         const popUp = document.querySelector('.popUp')
