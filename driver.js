@@ -58,10 +58,14 @@ class Driver {
         this.placedShips.push(length);
 
         if (this.placedShips.length == 4) {
+            const comSquares = document.querySelectorAll('.com-board .square');
             const readyButton = document.createElement('button');
             readyButton.classList.add('ready');
             readyButton.textContent = 'Ready';
             readyButton.addEventListener('click', () => {
+                for (let square of comSquares) {
+                    square.classList.remove('done-disabled')
+                }
                 this.comPlayerBoard.populateShips();
                 readyButton.remove();
                 resetButton();
@@ -71,10 +75,10 @@ class Driver {
             const buttonBox = document.querySelector('.button-box');
             buttonBox.appendChild(readyButton)
 
-            const comSquares = document.querySelectorAll('.com-board .square');
+
             for (let square of comSquares) {
                 square.addEventListener('click', function() {squareClick(driver, this)});
-                square.classList.remove('done-disabled')
+                square.classList.add('done-disabled');
             }
             
             
@@ -105,7 +109,7 @@ class Driver {
 
         if (this.comPlayerBoard.checkEnd() == true) {
             console.log('End of Game');
-            const squares = document.querySelectorAll('.squares');
+            const squares = document.querySelectorAll('.square');
             for (let s of squares) {
                 s.classList.add('done-disabled');
             }
@@ -141,7 +145,7 @@ class Driver {
 
         if (this.realPlayerBoard.checkEnd() == true) {
             console.log('End of Game');
-            const squares = document.querySelectorAll('.squares');
+            const squares = document.querySelectorAll('.square');
             for (let s of squares) {
                 s.classList.add('done-disabled');
             }
