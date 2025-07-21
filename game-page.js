@@ -194,7 +194,7 @@ function sunkDisplay(coord, direction, length, type) {
                 const square = document.querySelector(`.com-board .sq${currentCoord[0]}-${currentCoord[1]}`);
                 square.classList.add('sunk');
                 square.classList.remove('hit');
-                youSunk = false
+                youSunk = false;
             }
         }
     } else if (direction === 'v') {
