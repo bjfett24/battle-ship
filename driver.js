@@ -82,6 +82,8 @@ class Driver {
             for (let square of comSquares) {
                 square.classList.remove('done-disabled')
             }
+
+            changeMessageBoard('Fire your missiles!')
             this.comPlayerBoard.populateShips();
             readyButton.remove();
             resetButton();
