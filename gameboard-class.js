@@ -20,6 +20,10 @@ class GameBoard {
     }
 
     checkForClearing(coord, direction, length) {
+        coord = this.checkEdge(coord, length, direction);
+        console.log(coord);
+        
+        
         let clear = true;
         if (direction === 'h') {
             for (let i = 1; i < length; i++) {
@@ -105,6 +109,22 @@ class GameBoard {
         }
     }
 
+    checkEdge(coord, length, direction) {
+        if (direction == 'h') {
+            if (coord[0] + length - 1 > 9) {
+                return [9 - (length - 1), coord[1]];
+            } else {
+                return [coord[0], coord[1]];
+            }
+        } else {
+            if (coord[1] + length - 1 > 9) {
+                    return [coord[0], 9 - (length - 1)];            
+            } else {
+                    return [coord[0], coord[1]];
+            }
+        }
+    }
+
     placeShip(coord, length, direction, type = null) {
         const newShip = new Ship(length, coord, direction, type);
 
@@ -119,6 +139,7 @@ class GameBoard {
                 for (let i = 0; i < length; i++) {
                     this.matrix[coord[0] + i][coord[1]] = newShip;
                 }
+                
             }
         } else {
             if (coord[1] + length - 1 > 9) {

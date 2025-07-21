@@ -91,6 +91,7 @@ function getDirection(horizInput, vertInput) {
 
 function uncheckedError() {
     const messageBox = document.createElement('div');
+    messageBox.classList.add('error');
     messageBox.style.cssText = `
         position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
         background-color: #ffdddd; color: #d8000c; padding: 10px 20px;
@@ -117,6 +118,7 @@ function checkCollision(driver, ship, length, coord, direction) {
         popUp.close(); // Close the dialog
     } else {
         const collision = document.createElement('div');
+        collision.classList.add('error');
         collision.style.cssText = `
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
             background-color: #ffdddd; color: #d8000c; padding: 10px 20px;

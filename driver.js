@@ -1,5 +1,5 @@
 import { Player } from "./player-class.js";
-import { showHitOrMiss, squareClick, resetButton, handleSquareAbility} from "./game-page.js";
+import { showHitOrMiss, squareClick, resetButton, handleSquareAbility, changeMessageBoard} from "./game-page.js";
 
 class Driver {
     constructor() {
@@ -62,6 +62,8 @@ class Driver {
         const comSquares = document.querySelectorAll('.com-board .square');
 
         resetButton('remove');
+
+        changeMessageBoard('Ready Your Ships!');
         
         this.populateReadyButton();
 
@@ -101,33 +103,34 @@ class Driver {
         }
         const coord = this.getSquareCoord(square);
         const isHit = this.checkComSquare(coord);
+        showHitOrMiss(isHit, square);
         this.comPlayerBoard.receiveAttack(coord);
 
-        showHitOrMiss(isHit, square);
+  
 
         this.endAction('real');
 
+        if (this.comPlayerBoard.checkEnd() == false) {
+            setTimeout(() => {
+                this.comAttack();
+                for (let sq of this.comSquares) {
+                    sq.classList.remove('disabled');
+                }
 
-        setTimeout(() => {
-            this.comAttack();
-            for (let sq of this.comSquares) {
-                sq.classList.remove('disabled');
-            }
-
-        }, 1000);
-
+            }, 1000);
+        }
     }
 
     endAction(type) {
         if (type === 'real') {
             if (this.comPlayerBoard.checkEnd() === true) {
-            console.log('End of Game');
+            changeMessageBoard('You Won!')
             const squares = document.querySelectorAll('.square');
             handleSquareAbility(squares, false);
             }
         } else if (type === 'com') {
             if (this.realPlayerBoard.checkEnd() == true) {
-                console.log('End of Game');
+                changeMessageBoard('You Lost.');
                 const squares = document.querySelectorAll('.square');
                 handleSquareAbility(squares, false);
             }

@@ -14,12 +14,6 @@ function populateGame() {
     title.textContent = 'Battle Ships';
     container.appendChild(title);
 
-    const buttonBox = document.createElement('div');
-    buttonBox.classList.add('button-box');
-    container.appendChild(buttonBox);
-
-    resetButton();
-
     const boardContainer = document.createElement('div');
     boardContainer.classList.add('board', 'container');
     container.appendChild(boardContainer);
@@ -29,9 +23,19 @@ function populateGame() {
     messageBoard.textContent = 'Place Your Ships!';
     boardContainer.appendChild(messageBoard);
 
+    const sideBoard = document.createElement('div');
+    sideBoard.classList.add('side-board');
+    boardContainer.appendChild(sideBoard);
+
+    const buttonBox = document.createElement('div');
+    buttonBox.classList.add('button-box');
+    sideBoard.appendChild(buttonBox);
+
+    resetButton();
+
     const shipDock = document.createElement('div');
     shipDock.classList.add('ship-dock');
-    boardContainer.appendChild(shipDock);
+    sideBoard.appendChild(shipDock);
 
     const myBoard = document.createElement('div');
     myBoard.classList.add('my-board');
@@ -154,10 +158,12 @@ function fillBoards(boards) {
 
 function showHit(square) {
     square.classList.add('hit', 'done-disabled');
+    changeMessageBoard('Hit!');
 }
 
 function showMiss(square) {
     square.classList.add('miss', 'done-disabled');
+    changeMessageBoard('Miss!')
 }
 
 function resetButton(command = undefined) {
@@ -175,7 +181,7 @@ function resetButton(command = undefined) {
 }
 
 function sunkDisplay(coord, direction, length, type) {
-    console.log(type);
+    let youSunk;
     if (direction === 'h') {
         for (let i = 0; i < length; i++) {
             const currentCoord = [coord[0] + i, coord[1]];
@@ -183,10 +189,12 @@ function sunkDisplay(coord, direction, length, type) {
                 const square = document.querySelector(`.my-board .sq${currentCoord[0]}-${currentCoord[1]}`);
                 square.classList.add('sunk');
                 square.classList.remove('hit');
+                youSunk = true;
             } else if (type === 'com') {
                 const square = document.querySelector(`.com-board .sq${currentCoord[0]}-${currentCoord[1]}`);
                 square.classList.add('sunk');
                 square.classList.remove('hit');
+                youSunk = false
             }
         }
     } else if (direction === 'v') {
@@ -196,12 +204,19 @@ function sunkDisplay(coord, direction, length, type) {
                 const square = document.querySelector(`.my-board .sq${currentCoord[0]}-${currentCoord[1]}`);
                 square.classList.add('sunk');
                 square.classList.remove('hit');
+                youSunk = true;
             } else if (type === 'com') {
                 const square = document.querySelector(`.com-board .sq${currentCoord[0]}-${currentCoord[1]}`);
                 square.classList.add('sunk');
                 square.classList.remove('hit');
+                youSunk = false;
             }
         }
+    }
+    if (youSunk) {
+        changeMessageBoard('Nice Sinker!');
+    } else {
+        changeMessageBoard('Your ship was sunk.');
     }
 }
 
@@ -245,6 +260,11 @@ function squarePlacement(squares, enable) {
     }
 }
 
+function changeMessageBoard(str) {
+    const messageBoard = document.querySelector('.message-board');
+    messageBoard.textContent = str;
+}
 
 
-export { populateGame, showHit, showMiss, resetButton, squareClick, sunkDisplay, popMockShips, shipSelection, disableShip, handleSquareAbility, showHitOrMiss, squarePlacement};
+
+export { populateGame, showHit, showMiss, resetButton, squareClick, sunkDisplay, popMockShips, shipSelection, disableShip, handleSquareAbility, showHitOrMiss, squarePlacement, changeMessageBoard};
