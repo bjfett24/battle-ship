@@ -213,7 +213,7 @@ function sunkDisplay(coord, direction, length, type) {
             }
         }
     }
-    if (youSunk) {
+    if (!youSunk) {
         changeMessageBoard('Nice Sinker!');
     } else {
         changeMessageBoard('Your ship was sunk.');
